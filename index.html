@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitClock | GitHub Contribution Display for Android</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Google Sans', 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <button id="menu-toggle" aria-label="Toggle navigation">
+            <svg viewBox="0 0 100 80" width="20" height="20" fill="currentColor">
+                <rect width="100" height="10"></rect>
+                <rect y="30" width="100" height="10"></rect>
+                <rect y="60" width="100" height="10"></rect>
+            </svg>
+        </button>
+
+        <aside class="sidebar">
+            <h2 style="display: flex; align-items: center; gap: 0.5rem;">
+                <svg viewBox="0 0 16 16" version="1.1" width="20" height="20" aria-hidden="true" fill="currentColor">
+                    <path
+                        d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836a2.492 2.492 0 0 1 1.499-2.328A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Zm8.25-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z">
+                    </path>
+                </svg>
+                GitClock
+            </h2>
+            <ul class="nav-links">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#prerequisites">Prerequisites</a></li>
+                <li><a href="#setup">Setup</a></li>
+                <li><a href="#web-editor">Web Editor</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#known-issues">Known Issues</a></li>
+                <li><a href="#contributing">Contributing</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <section class="hero">
+                <h1>GitHub Contribution Display for Android</h1>
+                <p>Transform your old Android device into an always-on GitHub contribution tracker.</p>
+                <div
+                    style="margin-top: 2rem; display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <a href="https://github.com/terminal-index/gitclock"
+                        style="background: #238636; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 600; text-decoration: none;">View
+                        on GitHub</a>
+                    <a href="https://github.com/terminal-index/gitclock/releases"
+                        style="background: #1f6feb; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 600; text-decoration: none;">Download
+                        APK</a>
+                    <a href="https://github.com/sponsors/terminal-index"
+                        style="background: #bf4b8a; color: white; padding: 0.8rem 1.5rem; border-radius: 6px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16"
+                            data-view-component="true" style="fill: currentColor;">
+                            <path
+                                d="m8 14.25.345.666a.75.75 0 0 1-.69 0l-.008-.004-.018-.01a7.152 7.152 0 0 1-.31-.17 22.055 22.055 0 0 1-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.066 22.066 0 0 1-3.744 2.584l-.018.01-.006.003h-.002ZM4.25 2.5c-1.316 0-2.75 1.29-2.75 3 0 2.192 1.605 4.143 3.388 5.68a20.57 20.57 0 0 0 3.112 2.193 20.55 20.55 0 0 0 3.112-2.193c1.783-1.537 3.388-3.488 3.388-5.68 0-1.71-1.434-3-2.75-3-1.055 0-1.995.79-2.476 1.78a.75.75 0 0 1-1.352 0C7.745 3.29 6.805 2.5 5.75 2.5Z">
+                            </path>
+                        </svg>
+                        Sponsor
+                    </a>
+                </div>
+
+                <div class="screenshot-gallery">
+                    <img src="docs/screenshots/dashboard.png" alt="GitClock Dashboard - Fullscreen Landscape Mode">
+                    <p style="text-align: center; color: var(--secondary-color); margin-top: 0.5rem;"><em>GitClock
+                            running in fullscreen Landscape Mode</em></p>
+                </div>
+            </section>
+
+            <section id="overview">
+                <h2>Overview</h2>
+                <p>This is a <strong>dedicated dashboard application</strong> that repurposes your Android device into
+                    an always-on GitHub contribution tracker. It uses the GitHub GraphQL API to fetch your real-time
+                    stats and visualizes them in a beautiful, OLED-friendly interface, providing a premium desk
+                    accessory experience without requiring a dedicated complex hardware build.</p>
+                <br>
+                <p><strong>Designed for:</strong> Secondary/Old Android Phones (OLED screens recommended)<br>
+                    <strong>Compatibility:</strong> Android 12L and newer
+                </p>
+
+                <blockquote>
+                    <p
+                        style="border-left: 4px solid var(--primary-color); padding-left: 1rem; color: var(--secondary-color); margin: 1rem 0;">
+                        My testing configuration: Sony Xperia 5 II • Android 15 • OLED 2560x1080</p>
+                </blockquote>
+
+                <h3>Main Features</h3>
+                <p>The app automates the process of:</p>
+                <ol>
+                    <li><strong>Keeping the screen alive</strong> efficiently (WakeLocks).</li>
+                    <li><strong>Fetching data</strong> from GitHub (Contributions, Issues, PRs) every minute.</li>
+                    <li><strong>Rendering</strong> a pixel-perfect contribution graph using Jetpack Compose.</li>
+                    <li><strong>(BETA) Hosting a local Web Server</strong> to allow remote layout configuration from
+                        your PC.</li>
+                </ol>
+                <p>The result is a seamless, set-and-forget desk clock that keeps you motivated to code.</p>
+            </section>
+
+            <section id="prerequisites">
+                <h2>Prerequisites</h2>
+                <ul>
+                    <li><strong>Hardware:</strong> Android Phone or Tablet (OLED screen preferred for "True Black"
+                        mode).</li>
+                    <li><strong>Software:</strong>
+                        <ul>
+                            <li>Android 12L or higher (due to Material You theming).</li>
+                            <li>(Optional) GitHub Classic Token for private repository tracking.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Network:</strong> Active WiFi connection.</li>
+                </ul>
+            </section>
+
+            <section id="setup">
+                <h2>Setup</h2>
+                <h3>Installation</h3>
+                <p>You can grab the latest APK from the <a
+                        href="https://github.com/terminal-index/gitclock/releases">Releases</a> page.</p>
+
+                <p><strong>Build from Source:</strong></p>
+                <pre><code># Clone the repo
+git clone https://github.com/terminal-index/gitclock.git
+
+# Open in Android Studio and hit Run (Shift + F10)
+</code></pre>
+
+                <h3>Initial Configuration</h3>
+                <div class="screenshot-gallery">
+                    <img src="docs/screenshots/setupscreen.png" alt="GitClock Setup Screen" style="max-width: 400px;">
+                </div>
+                <ol>
+                    <li><strong>Launch</strong> the app.</li>
+                    <li><strong>Permissions:</strong> Grant Notification permissions (required for foreground service to
+                        keep app alive).</li>
+                    <li><strong>Auth:</strong>
+                        <ul>
+                            <li>Enter your <strong>GitHub Username</strong>.</li>
+                            <li>(Optional) Enter <strong>OAuth Token</strong> if you want to see stats from private
+                                repos.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+
+            <section id="web-editor">
+                <h2>Web Editor (Remote Layout Editor)</h2>
+                <p>GitClock features a unique <strong>Remote Layout Editor</strong>. Instead of fumbling with touch
+                    controls on a small screen, you customize the UI from your desktop.</p>
+
+                <div class="screenshot-gallery">
+                    <img src="docs/screenshots/webeditor.png" alt="GitClock Web Editor Interface"
+                        style="max-width: 600px;">
+                    <p style="text-align: center; color: var(--secondary-color); margin-top: 0.5rem;"><em>Drag and drop
+                            interface for remote layout customization</em></p>
+                </div>
+
+                <h3>How to Use</h3>
+                <ol>
+                    <li>Go to <strong>Settings</strong> (Gear Icon) → Enable <strong>Remote Server</strong>.</li>
+                    <li>Note the IP address displayed (e.g., <code>192.168.1.15:8080</code>).</li>
+                    <li>Open that URL in your PC browser.</li>
+                    <li><strong>Drag and Drop</strong> components to rearrange them. Changes appear instantly on the
+                        phone!</li>
+                </ol>
+            </section>
+
+            <section id="architecture">
+                <h2>Architecture Explained</h2>
+
+                <h3>The Web Server</h3>
+                <p>Feature in early BETA Stage. Do not expect it to work fine. The app runs an embedded
+                    <strong>Ktor</strong> server (<code>WebServer.kt</code>) on port 8080.
+                </p>
+                <ul>
+                    <li>It serves a static HTML/JS frontend to your browser.</li>
+                    <li>It uses a WebSocket or REST endpoints to sync coordinates between the browser canvas and the
+                        Android Jetpack Compose state.</li>
+                    <li><strong>Why?</strong> Because editing complex layouts on a touch screen is annoying. Mouse
+                        control is precise.</li>
+                </ul>
+
+                <h3>Data Fetching Strategy</h3>
+                <p>We use a hybrid approach in <code>GitClockRepository.kt</code>:</p>
+                <ol>
+                    <li><strong>Public Data:</strong> Fetches from <code>github-contributions-api.jogruber.de</code>
+                        (fast, no token needed).</li>
+                    <li><strong>Private Data:</strong> If a token is provided, we switch to <strong>GitHub GraphQL
+                            API</strong> (<code>viewer { contributionsCollection ... }</code>) to get accurate counts
+                        including private commits.</li>
+                </ol>
+
+                <h3>OLED Protection</h3>
+                <p>To prevent burn-in on OLED screens:</p>
+                <ul>
+                    <li><strong>True Black Background:</strong> Pixels are turned off (<code>#000000</code>).</li>
+                    <li><strong>Pixel Shift:</strong> (Planned/WIP) Elements slightly nudge their position every few
+                        minutes to prevent static image retention.</li>
+                </ul>
+            </section>
+
+            <section id="known-issues">
+                <h2>Known Issues</h2>
+
+                <h3>⚠️ 1. App Killed by System (Samsung/Xiaomi/Huawei)</h3>
+                <p><strong>Issue:</strong> The clock works for a few hours and then the app closes.</p>
+                <p><strong>Symptoms:</strong></p>
+                <ul>
+                    <li>You look at the phone and it's on the home screen.</li>
+                    <li>Stats stopped updating.</li>
+                </ul>
+                <p><strong>Root Cause:</strong> Aggressive battery management in custom Android skins kills
+                    background/foreground services to "save battery".</p>
+                <p><strong>Workaround:</strong></p>
+                <ul>
+                    <li>Lock the app in the "Recents" view.</li>
+                    <li>Go to Settings → Battery → Exclude GitClock from optimizations.</li>
+                    <li>Check <a href="https://dontkillmyapp.com">dontkillmyapp.com</a> for your specific device.</li>
+                </ul>
+
+                <h3>⚠️ 2. GitHub Rate Limiting</h3>
+                <p><strong>Issue:</strong> Data stops updating, graphs disappear.</p>
+                <p><strong>Symptoms:</strong></p>
+                <ul>
+                    <li>Graph becomes empty.</li>
+                    <li>Error logs show HTTP 403.</li>
+                </ul>
+                <p><strong>Root Cause:</strong> Unauthenticated requests to GitHub are limited to 60 per hour. If you
+                    have many widgets or refresh too often, you hit the cap.</p>
+                <p><strong>Solution:</strong> Add a <strong>Personal Access Token</strong> in settings. This increases
+                    your limit to 5,000 requests per hour.</p>
+            </section>
+
+            <section id="contributing">
+                <h2>Contributing</h2>
+                <p>If you discover improvements or solutions to known issues, please <strong>open an issue</strong> to
+                    discuss them or submit a Pull Request! All contributions are welcome.</p>
+                <p>Check out our <a
+                        href="https://github.com/terminal-index/gitclock/blob/main/.github/CONTRIBUTING.md">Contributing
+                        Guidelines</a> for more details.</p>
+            </section>
+
+            <section id="support">
+                <h2>Support My Work</h2>
+                <p>If this project helps you stay productive, consider supporting my work (and energy drink consumption
+                    ☕) - especially since I'm a student at <strong>SUT (Silesian University of Technology)</strong>:</p>
+                <ul>
+                    <li><a href="https://github.com/sponsors/terminal-index">GitHub Sponsors</a></li>
+                </ul>
+            </section>
+
+            <section id="license">
+                <h2>License</h2>
+                <p>It's MIT! See the <a href="https://github.com/terminal-index/gitclock/blob/main/LICENSE">LICENSE</a>
+                    file for details. You can do whatever you want with it, just don't blame me if something breaks. I
+                    am not responsible for any damage you may cause to your device. You are on your own. Sorry :C</p>
+            </section>
+
+            <footer
+                style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border-color); color: var(--secondary-color); font-size: 0.9rem;">
+                <p>Made with 🤎 in 🇵🇱 by Terminal-Index.</p>
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
